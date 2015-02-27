@@ -1,0 +1,38 @@
+{
+  "name": "node-mongoose-validator",
+  "version": "1.0.0",
+  "description": "Easily validate mongoose paths",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SamVerschueren/node-mongoose-validator.git"
+  },
+  "keywords": [
+    "mongoose",
+    "validator"
+  ],
+  "author": "Sam Verschueren",
+  "contributors": [
+    {
+      "name": "Sam Verschueren",
+      "email": "sam.verschueren@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SamVerschueren/node-mongoose-validator/issues"
+  },
+  "homepage": "https://github.com/SamVerschueren/node-mongoose-validator",
+  "dependencies": {
+    "lodash": "^3.3.1",
+    "validator": "^3.32.0"
+  },
+  "devDependencies": {
+    "chai": "^2.1.0",
+    "mongoose": "^3.8.24",
+    "sinon": "^1.12.2"
+  }
+}
