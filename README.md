@@ -126,7 +126,13 @@ npm test
 
 ## Release notes
 
-Should add more tests in the near future.
+- **v1.1.0** - 28 Feb. 2015
+    - More tests
+    - Custom ```in()``` validator
+
+- **v1.0.0** - 27 Feb. 2015
+    - Initial release
+    - Custom ```notEmpty()``` validator
 
 ## Contributors
 
