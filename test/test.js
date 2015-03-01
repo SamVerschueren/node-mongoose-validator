@@ -28,12 +28,14 @@ describe('node-mongoose-validator', function() {
     beforeEach(function() {
         obj = {
             name: 'Sam',
-            email: 'sam.verschueren@gmail.com'
+            email: 'sam.verschueren@gmail.com',
+            gender: 'male'
         };
 
         UserSchema = new Schema({
-            name:       {type: String, required: true},
-            email:      {type: String, required: true}
+            name:       {type: String},
+            email:      {type: String},
+            gender:     {type: String}
         });
 
         User = mongoose.model('User', UserSchema);
@@ -51,6 +53,10 @@ describe('node-mongoose-validator', function() {
 
     describe('Function', function() {
 
+        it('Should return a function', function() {
+            validator.notEmpty().should.be.a('function');
+        });
+
         describe('#notEmpty', function() {
 
             var errMsg = 'Please provide a name';
@@ -67,8 +73,8 @@ describe('node-mongoose-validator', function() {
                 });
             });
 
-            it('Should return an error if the name is not provided', function(done) {
-                delete obj.name;
+            it('Should return an error if the name is empty', function(done) {
+                obj.name = '';
 
                 new User(obj).save(function(err) {
                     should.exist(err);
@@ -77,12 +83,59 @@ describe('node-mongoose-validator', function() {
                 });
             });
 
-            it('Should return the correct error if the email address is not valid', function(done) {
-                delete obj.name;
+            it('Should return the correct error if the name is empty', function(done) {
+                obj.name = '';
 
                 new User(obj).save(function(err) {
-                    //err.errors.name.message.should.be.equal(errMsg);
+                    err.errors.name.message.should.be.equal(errMsg);
 
+                    done();
+                });
+            });
+        });
+
+        describe('#in', function() {
+
+            var list = ['male', 'female'],
+                errMsg = 'Gender should be one of ' + list.join(', ') + '.';
+
+            beforeEach(function() {
+                UserSchema.path('gender').validate(validator.in(list), errMsg);
+            });
+
+            it('Should not return an error if the gender is present in the list', function(done) {
+                new User(obj).save(function(err) {
+                    should.not.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is empty', function(done) {
+                obj.gender = '';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is not in the list', function(done) {
+                obj.gender = 'other';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return the correct error', function(done) {
+                obj.gender = 'other';
+
+                new User(obj).save(function(err) {
+                    err.errors.gender.message.should.be.equal(errMsg);
 
                     done();
                 });
@@ -98,7 +151,7 @@ describe('node-mongoose-validator', function() {
             });
 
             it('Should not return an error if the email address is valid', function(done) {
-                new User({name: 'Sam', email: 'sam.verschueren@gmail.com'}).save(function(err) {
+                new User(obj).save(function(err) {
                     should.not.exist(err);
 
                     done();
@@ -106,7 +159,9 @@ describe('node-mongoose-validator', function() {
             });
 
             it('Should return an error if the email address is not valid', function(done) {
-                new User({name: 'Sam', email: 'sam.verschueren'}).save(function(err) {
+                obj.email = 'sam.verschueren';
+
+                new User(obj).save(function(err) {
                     should.exist(err);
 
                     done();
@@ -114,17 +169,35 @@ describe('node-mongoose-validator', function() {
             });
 
             it('Should return the correct error if the email address is not valid', function(done) {
-                new User({name: 'Sam', email: 'sam.verschueren'}).save(function(err) {
+                obj.email = 'sam.verschueren';
+
+                new User(obj).save(function(err) {
                     err.errors.email.message.should.be.equal(errMsg);
 
                     done();
                 });
             });
         });
-
     });
 
     describe('Object', function() {
+
+        it('Should return an object', function() {
+            validator.$notEmpty().should.be.an('Object');
+        });
+
+        it('Should return an object with the correct properties', function() {
+            var v = validator.$notEmpty();
+
+            v.should.have.property('validator');
+            v.should.have.property('msg');
+        });
+
+        it('Should return an object with the correct error message', function() {
+            var v = validator.$notEmpty({msg: 'Invalid property'});
+
+            v.msg.should.be.equals('Invalid property');
+        });
 
         describe('#$notEmpty', function() {
 
@@ -142,8 +215,8 @@ describe('node-mongoose-validator', function() {
                 });
             });
 
-            it('Should return an error if the name is not provided', function(done) {
-                delete obj.name;
+            it('Should return an error if the name is empty', function(done) {
+                obj.name = '';
 
                 new User(obj).save(function(err) {
                     should.exist(err);
@@ -152,25 +225,120 @@ describe('node-mongoose-validator', function() {
                 });
             });
 
-            it('Should return the correct error if the email address is not valid', function(done) {
-                delete obj.name;
+            it('Should return the correct error if the name is empty', function(done) {
+                obj.name = '';
 
                 new User(obj).save(function(err) {
-                    //err.errors.name.message.should.be.equal(errMsg);
-
+                    err.errors.name.message.should.be.equal(errMsg);
 
                     done();
                 });
             });
         });
 
-        describe('#$isEmail', function() {
+        describe('#in', function() {
+
+            var errMsg = 'Invalid gender.';
+
+            beforeEach(function() {
+                UserSchema.path('gender').validate(validator.in(['male', 'female']), errMsg);
+            });
+
+            it('Should not return an error if the gender is present in the list', function(done) {
+                new User(obj).save(function(err) {
+                    should.not.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is empty', function(done) {
+                obj.gender = '';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is not in the list', function(done) {
+                obj.gender = 'other';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return the correct error', function(done) {
+                obj.gender = 'other';
+
+                new User(obj).save(function(err) {
+                    err.errors.gender.message.should.be.equal(errMsg);
+
+                    done();
+                });
+            });
+        });
+
+        describe('#in', function() {
+
+            var errMsg = 'Invalid gender.';
+
+            beforeEach(function() {
+                UserSchema.path('gender').validate(validator.$in(['male', 'female'], {msg: errMsg}));
+            });
+
+            it('Should not return an error if the gender is present in the list', function(done) {
+                new User(obj).save(function(err) {
+                    should.not.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is empty', function(done) {
+                obj.gender = '';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is not in the list', function(done) {
+                obj.gender = 'other';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return the correct error', function(done) {
+                obj.gender = 'other';
+
+                new User(obj).save(function(err) {
+                    err.errors.gender.message.should.be.equal(errMsg);
+
+                    done();
+                });
+            });
+        });
+
+        describe('#isEmail', function() {
 
             var errMsg = 'Email is wrong';
 
-            it('Should not return an error if the email address is valid', function(done) {
+            beforeEach(function() {
                 UserSchema.path('email').validate(validator.$isEmail({msg: errMsg}));
+            });
 
+            it('Should not return an error if the email address is valid', function(done) {
                 new User(obj).save(function(err) {
                     should.not.exist(err);
 
@@ -179,8 +347,6 @@ describe('node-mongoose-validator', function() {
             });
 
             it('Should return an error if the email address is not valid', function(done) {
-                UserSchema.path('email').validate(validator.$isEmail({msg: errMsg}));
-
                 obj.email = 'sam.verschueren';
 
                 new User(obj).save(function(err) {
@@ -191,24 +357,10 @@ describe('node-mongoose-validator', function() {
             });
 
             it('Should return the correct error if the email address is not valid', function(done) {
-                UserSchema.path('email').validate(validator.$isEmail({msg: errMsg}));
-
                 obj.email = 'sam.verschueren';
 
                 new User(obj).save(function(err) {
                     err.errors.email.message.should.be.equal(errMsg);
-
-                    done();
-                });
-            });
-
-            it('Should not return an error if the email is a display email and this is enabled in the validator', function(done) {
-                UserSchema.path('email').validate(validator.$isEmail({allow_display_name: true, }, {msg: errMsg}));
-
-                obj.email = 'Sam Verschueren <sam.verschueren@gmail.com>';
-
-                new User(obj).save(function(err) {
-                    should.not.exist(err);
 
                     done();
                 });

@@ -1,5 +1,7 @@
 # node-mongoose-validator
 
+[![Dependency Status]](https://david-dm.org/samverschueren/node-mongoose-validator.svg)(https://david-dm.org/samverschueren/node-mongoose-validator)
+
 A library for mongoose schema path validations.
 
 ## Installation
