@@ -1,7 +1,8 @@
 # node-mongoose-validator
 
+[![Build Status](https://travis-ci.org/SamVerschueren/node-mongoose-validator.svg)](https://travis-ci.org/SamVerschueren/node-mongoose-validator)
 [![Dependency Status](https://david-dm.org/samverschueren/node-mongoose-validator.svg)](https://david-dm.org/samverschueren/node-mongoose-validator)
-[![Downloads](http://img.shields.io/npm/dm/node-mongoose-validator.svg)](https://www.npmjs.com/package/node-mongoose-validator)
+[![devDependency Status](https://david-dm.org/samverschueren/node-mongoose-validator/dev-status.svg)](https://david-dm.org/samverschueren/node-mongoose-validator#info=devDependencies)
 
 A library for mongoose schema path validations.
 
@@ -18,6 +19,8 @@ The validation library can be used an a couple of different ways. The first way 
 ```JavaScript
 var mongoose = require('mongoose'),
     validator = require('node-mongoose-validator');
+
+var Schema = mongoose.Schema;
 
 UserSchema = new Schema({
     name:       {type: String, required: true},
