@@ -1,6 +1,7 @@
 # node-mongoose-validator
 
-[![Dependency Status]](https://david-dm.org/samverschueren/node-mongoose-validator.svg)(https://david-dm.org/samverschueren/node-mongoose-validator)
+[![Dependency Status](https://david-dm.org/samverschueren/node-mongoose-validator.svg)](https://david-dm.org/samverschueren/node-mongoose-validator)
+[![Downloads](http://img.shields.io/npm/dm/node-mongoose-validator.svg)](https://www.npmjs.com/package/node-mongoose-validator)
 
 A library for mongoose schema path validations.
 
@@ -93,11 +94,12 @@ This library uses the [validator](https://github.com/chriso/validator.js) librar
 - **isHalfWidth()** - check if the string contains any half-width chars.
 - **isVariableWidth()** - check if the string contains a mixture of full and half-width chars.
 - **isSurrogatePair()** - check if the string contains any surrogate pairs chars.
-- **isMongoId()** - check if the string is a valid hex-encoded representation of a [MongoDB ObjectId][mongoid].
+- **isMongoId()** - check if the string is a valid hex-encoded representation of a [MongoDB ObjectId](http://docs.mongodb.org/manual/reference/object-id/).
 
 There are extra validators added that can come in handy.
 
 - **notEmpty()** - check if the string at least has a length of 1.
+- **in(arr)** - check if the string is present in the array.
 
 ### Extending
 
@@ -127,7 +129,7 @@ Should add more tests in the near future.
 
 - Sam Verschueren [<sam.verschueren@gmail.com>]
 
-### License (MIT)
+## License (MIT)
 
 ```
 Copyright (c) 2015 Sam Verschueren <sam.verschueren@gmail.com>
