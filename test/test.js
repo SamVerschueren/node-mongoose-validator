@@ -57,6 +57,53 @@ describe('node-mongoose-validator', function() {
             validator.notEmpty().should.be.a('function');
         });
 
+        describe('#equals', function() {
+
+            var errMsg = 'The gender can only be male.';
+
+            beforeEach(function() {
+                UserSchema.path('gender').validate(validator.equals('male'), errMsg);
+            });
+
+            it('Should not return an error if the gender is male', function(done) {
+                new User(obj).save(function(err) {
+                    should.not.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is empty', function(done) {
+                obj.gender = '';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is female', function(done) {
+                obj.gender = 'female';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return the correct error', function(done) {
+                obj.gender = 'female';
+
+                new User(obj).save(function(err) {
+                    err.errors.gender.message.should.be.equal(errMsg);
+
+                    done();
+                });
+            });
+        });
+
         describe('#notEmpty', function() {
 
             var errMsg = 'Please provide a name';
@@ -94,13 +141,13 @@ describe('node-mongoose-validator', function() {
             });
         });
 
-        describe('#in', function() {
+        describe('#isIn', function() {
 
             var list = ['male', 'female'],
                 errMsg = 'Gender should be one of ' + list.join(', ') + '.';
 
             beforeEach(function() {
-                UserSchema.path('gender').validate(validator.in(list), errMsg);
+                UserSchema.path('gender').validate(validator.isIn(list), errMsg);
             });
 
             it('Should not return an error if the gender is present in the list', function(done) {
@@ -199,6 +246,53 @@ describe('node-mongoose-validator', function() {
             v.msg.should.be.equals('Invalid property');
         });
 
+        describe('#$equals', function() {
+
+            var errMsg = 'The gender can only be male.';
+
+            beforeEach(function() {
+                UserSchema.path('gender').validate(validator.$equals('male', {msg: errMsg}));
+            });
+
+            it('Should not return an error if the gender is male', function(done) {
+                new User(obj).save(function(err) {
+                    should.not.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is empty', function(done) {
+                obj.gender = '';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return an error if the gender is female', function(done) {
+                obj.gender = 'female';
+
+                new User(obj).save(function(err) {
+                    should.exist(err);
+
+                    done();
+                });
+            });
+
+            it('Should return the correct error', function(done) {
+                obj.gender = 'female';
+
+                new User(obj).save(function(err) {
+                    err.errors.gender.message.should.be.equal(errMsg);
+
+                    done();
+                });
+            });
+        });
+
         describe('#$notEmpty', function() {
 
             var errMsg = 'Please provide a name';
@@ -236,59 +330,12 @@ describe('node-mongoose-validator', function() {
             });
         });
 
-        describe('#in', function() {
+        describe('#$isIn', function() {
 
             var errMsg = 'Invalid gender.';
 
             beforeEach(function() {
-                UserSchema.path('gender').validate(validator.in(['male', 'female']), errMsg);
-            });
-
-            it('Should not return an error if the gender is present in the list', function(done) {
-                new User(obj).save(function(err) {
-                    should.not.exist(err);
-
-                    done();
-                });
-            });
-
-            it('Should return an error if the gender is empty', function(done) {
-                obj.gender = '';
-
-                new User(obj).save(function(err) {
-                    should.exist(err);
-
-                    done();
-                });
-            });
-
-            it('Should return an error if the gender is not in the list', function(done) {
-                obj.gender = 'other';
-
-                new User(obj).save(function(err) {
-                    should.exist(err);
-
-                    done();
-                });
-            });
-
-            it('Should return the correct error', function(done) {
-                obj.gender = 'other';
-
-                new User(obj).save(function(err) {
-                    err.errors.gender.message.should.be.equal(errMsg);
-
-                    done();
-                });
-            });
-        });
-
-        describe('#in', function() {
-
-            var errMsg = 'Invalid gender.';
-
-            beforeEach(function() {
-                UserSchema.path('gender').validate(validator.$in(['male', 'female'], {msg: errMsg}));
+                UserSchema.path('gender').validate(validator.$isIn(['male', 'female'], {msg: errMsg}));
             });
 
             it('Should not return an error if the gender is present in the list', function(done) {
