@@ -101,11 +101,10 @@ This library uses the [validator](https://github.com/chriso/validator.js) librar
 There are extra validators added that can come in handy.
 
 - **notEmpty()** - check if the string at least has a length of 1.
-- **in(arr)** - check if the string is present in the array.
 
 ### Extending
 
-You can add your own validators as well by extending the validators.
+You can add your own validators as well by using the ```extend()``` method.
 
 ```javascript
 validator.extend('isArray', function(arg) {
@@ -113,7 +112,7 @@ validator.extend('isArray', function(arg) {
 });
 ```
 
-This will create a ```isArray()``` and a ```$isArray()``` validator for you to use.
+This will create an ```isArray()``` and a ```$isArray()``` validator for you to use.
 
 ## Tests
 
