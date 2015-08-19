@@ -104,7 +104,7 @@ There are extra validators added that can come in handy.
 
 ### Extending
 
-You can add your own validators as well by using the ```extend()``` method.
+You can add your own validators as well by using the `extend()` method.
 
 ```javascript
 validator.extend('isArray', function(arg) {
@@ -112,7 +112,7 @@ validator.extend('isArray', function(arg) {
 });
 ```
 
-This will create an ```isArray()``` and a ```$isArray()``` validator for you to use.
+This will create an `isArray()` and a `$isArray()` validator for you to use.
 
 ## Tests
 
@@ -126,14 +126,15 @@ npm test
 
 - **v1.2.0** - 19 Aug. 2015
     - Updated the dependencies
+    - Removed `in()` because of duplicate `isIn()`
 
 - **v1.1.0** - 28 Feb. 2015
     - More tests
-    - Custom ```in()``` validator
+    - Custom `in()` validator
 
 - **v1.0.0** - 27 Feb. 2015
     - Initial release
-    - Custom ```notEmpty()``` validator
+    - Custom `notEmpty()` validator
 
 ## Contributors
 
