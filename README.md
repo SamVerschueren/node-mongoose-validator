@@ -2,21 +2,20 @@
 
 [![Build Status](https://travis-ci.org/SamVerschueren/node-mongoose-validator.svg)](https://travis-ci.org/SamVerschueren/node-mongoose-validator)
 [![Dependency Status](https://david-dm.org/samverschueren/node-mongoose-validator.svg)](https://david-dm.org/samverschueren/node-mongoose-validator)
-[![devDependency Status](https://david-dm.org/samverschueren/node-mongoose-validator/dev-status.svg)](https://david-dm.org/samverschueren/node-mongoose-validator#info=devDependencies)
 
-A library for mongoose schema path validations.
+> A library for mongoose schema path validations.
 
 ## Installation
 
 ```bash
-npm install node-mongoose-validator
+npm install --save node-mongoose-validator
 ```
 
 ## Usage
 
 The validation library can be used an a couple of different ways. The first way is by adding a validator for each path as you can see in the snippet below.
 
-```JavaScript
+```javascript
 var mongoose = require('mongoose'),
     validator = require('node-mongoose-validator');
 
@@ -36,21 +35,21 @@ mongoose.model('User', UserSchema);
 
 Instead of creating a validator function, it is also possible to create a validator object by adding a ```$``` in front of the method name.
 
-```JavaScript
+```javascript
 UserSchema.path('name').validate(validator.$notEmpty());
 UserSchema.path('email').validate(validator.$isEmail());
 ```
 
 If you want to change the error message by using this way of validating the path, you can add an extra option object.
 
-```JavaScript
+```javascript
 UserSchema.path('name').validate(validator.$notEmpty({msg: 'Please provide a name.'}));
 UserSchema.path('email').validate(validator.$isEmail({msg: 'Please provide a valid email address'}));
 ```
 
 A third way of validating a property is by adding a validator object directly in the schema.
 
-```JavaScript
+```javascript
 UserSchema = new Schema({
     name:       {type: String, required: true, validate: validator.$notEmpty({msg: 'Please provide a name.'})},
     email:      {type: String, required: true: validate: validator.$isEmail()}
@@ -108,7 +107,7 @@ There are extra validators added that can come in handy.
 
 You can add your own validators as well by extending the validators.
 
-```JavaScript
+```javascript
 validator.extend('isArray', function(arg) {
     return Array.isArray(arg);
 });
@@ -125,6 +124,9 @@ npm test
 ```
 
 ## Release notes
+
+- **v1.2.0** - 19 Aug. 2015
+    - Updated the dependencies
 
 - **v1.1.0** - 28 Feb. 2015
     - More tests
